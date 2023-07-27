@@ -1,5 +1,7 @@
 import "./styles.css";
 
+import { Chart } from "frappe-charts/dist/frappe-charts.min.esm";
+
 const queryJson = {
   "query": [
       {
@@ -57,7 +59,7 @@ const queryJson = {
 }
 
 const getData = async () => {
-  try {
+  
     const url = "https://statfin.stat.fi/PxWeb/api/v1/en/StatFin/synt/statfin_synt_pxt_12dy.px";
     
     const res = await fetch(url, {
@@ -70,8 +72,20 @@ const getData = async () => {
 
     const data = await res.json();
     return data;
-
-  } catch (error) {
-    console.error("Error fetching or parsing data:", error);
-  }
+  
 }
+
+const buildChart = async () => {
+    const data = await getData();
+
+    const chart = new frappe.Chart("#chart", {  
+    title: "This is a title",
+    data: data,
+    type: 'line', 
+    height: 450,
+    colors: ['#eb5146']
+    })
+}
+
+
+buildChart();
